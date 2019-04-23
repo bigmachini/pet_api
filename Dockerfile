@@ -30,6 +30,6 @@ RUN pip install -r requirements.txt
 
 # Listen to port 5000 at runtime
 EXPOSE 5000
-
+EXPOSE 27017
 # start the app server
 CMD python manage.py runserver

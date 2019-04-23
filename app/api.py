@@ -28,7 +28,7 @@ class AppAPI(MethodView):
             }
             return jsonify({'error': error}), 400
         else:
-            salt = bcrypt.getsalt()
+            salt = bcrypt.gensalt()
             hashed_pass = bcrypt.hashpw(app_secret, salt)
             app = App(
                 app_id=app_id,
@@ -53,11 +53,11 @@ class AccessAPI(MethodView):
         app = App.objects.filter(app_id=app_id).first()
         if not app:
             error = {
-                'code': 'INCORRECT_CREDENTIALS
+                'code': 'INCORRECT_CREDENTIALS'
             }
             return jsonify({'error': error}), 403
         else:
-            if bcrypt.hashpw((app_sercret), app.app_secret):
+            if bcrypt.hashpw((app_secret), app.app_secret):
                 existing_tokens = Access.objects.filter(app=app).delete()
                 token = str(uuid.uuid4())
                 now = datetime.utcnow().replace(seconds=0, microsecond=0)
